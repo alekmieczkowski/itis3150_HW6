@@ -32,7 +32,7 @@ function forward_user(){
 
 /*Send back with error*/
 function error_return($err){
-    printf("made it to error redirect, err: ". $err);
+    #printf("made it to error redirect, err: ". $err);
     header("Location: user_signup_form.php?error_msg=".$err);
 }
 
@@ -43,6 +43,7 @@ function createUser($usr_inp){
     unset($usr_inp["terms"]);
     #call to create user
     call_user_func_array('addUser', $usr_inp);
+    forward_user();
 }
 
 /********************/
@@ -94,11 +95,11 @@ for($x = 1; $x <= count($error_msg); $x++){
        
 
         #test
-        printf("<br/>flag:".$error_flag."  |  x: ".$x." | Function Call: ".$error_msg[$x][1]." | User Input: ".$user_input[$name]."<br/>");
+        #printf("<br/>flag:".$error_flag."  |  x: ".$x." | Function Call: ".$error_msg[$x][1]." | User Input: ".$user_input[$name]."<br/>");
 
         #check if error flag is not pulled
         if($error_flag){
-            printf("Made it to error flag pull, error: ".$error_msg[$x][2]);
+            #printf("Made it to error flag pull, error: ".$error_msg[$x][2]);
             error_return($error_msg[$x][2]);
             $user_switch = false;
             break 2;
@@ -108,10 +109,11 @@ for($x = 1; $x <= count($error_msg); $x++){
 }
 
 /*all checks passed*/
+printf("User Switch: ".$user_switch);
 if($user_switch)
     createUser($user_input);
-else 
-    printf("LSKDJFLSDKJFLKS SLDKFJS LK ");
+#else 
+    #printf("LSKDJFLSDKJFLKS SLDKFJS LK ");
 //delete confirm password and termsfrom arr
 
 #print_r($user_input);
@@ -169,7 +171,7 @@ function uniqueName($input, &$error_flag){
     else{ 
         $error_flag = false;
     }
-    printf("AFTER uniquename errorFlag: ".$error_flag);
+    #printf("AFTER uniquename errorFlag: ".$error_flag);
 }
 
  /**
