@@ -32,8 +32,6 @@ try{
     #loop through rest of  inputs
     for($x = 1; $x <= count($error_msg); $x++){
 
-        
-
         #loop through fields that need to be tested for this condition
         foreach($error_msg[$x][0] as $name){
 

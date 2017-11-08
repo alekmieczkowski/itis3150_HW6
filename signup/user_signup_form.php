@@ -74,11 +74,14 @@
           	<p>
           		<label for="dept">Department</label><br>
             	<select id="dept" name="dept" required>
-              		<option value="SIS">Engineering</option>
-              		<option value="CS">CS</option>
-              		<option value="BIO">BIO</option>
-              		<option value="MIS">MIS</option>
-              	</select>
+                  <?php 
+                  foreach ($departments as $department)
+                  {
+                    echo '<option value="'.$department['departmentID'].'">'.$department['departmentName'].'</option>';
+                  }
+                        
+                  ?>
+              </select>
 			</p>
           	
 			<p>
