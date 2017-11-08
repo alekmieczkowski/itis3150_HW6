@@ -25,7 +25,7 @@
           echo '</div>';
         }
       ?>
-        <form id="user_signup" action="signup_logic.php" method="post" class="inline">
+        <form name="user_signup" action="signup_logic.php" method="post" class="inline">
           <fieldset>
             <div class="span-9">
             <p>

@@ -18,7 +18,7 @@
       </div>
       <div class="span-18">
       	<div class="success">
-          User successfully registered. <a href="../login.php">Login</a>.
+          User successfully registered. <a href="../login.php">Login</a>
         </div>        
       </div>
       <div class="span-3 last">
