@@ -12,7 +12,6 @@ require_once('session.php');
     
 
 </head>
-
 <h1 style="color:black"> <!--TODO: IF statement for header based on user page-->University Courses Manager</h1>
 <hr/>
 <?php

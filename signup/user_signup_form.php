@@ -25,7 +25,7 @@
           echo '</div>';
         }
       ?>
-        <form name="user_signup" action="signup_logic.php" method="post" class="inline">
+        <form id="user_signup" action="signup_logic.php" method="post" class="inline">
           <fieldset>
             <div class="span-9">
             <p>
@@ -75,7 +75,8 @@
           		<label for="dept">Department</label><br>
             	<select id="dept" name="dept" required>
                   <?php 
-                  foreach ($departments as $department)
+                  $dept = getDepartments();
+                  foreach ($dept as $department)
                   {
                     echo '<option value="'.$department['departmentID'].'">'.$department['departmentName'].'</option>';
                   }
