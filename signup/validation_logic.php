@@ -5,7 +5,7 @@
  *  - add to error arr?
  *      - convert {1=>"err",...} + {inp1,inp2,...} ===> {1 => arr(inp1,"err"),....}
  */
-require_once('signup_imports.php');
+require_once('signup_db.php');
 
 #Connection Array {(array of fields that need to be tested), function to run, error}
 $error_msg = array(
@@ -36,13 +36,17 @@ for($x = 1; $x <= count($error_msg); $x++){
         #send arr of data for check callback (RE function pointer, array(user input value, error flag))
         call_user_func_array($error_msg[$x][1], array($user_input[$name], &$error_flag));
 
+        #test
+        #printf("flag:".$error_flag."  |  x: ".$x." | User Input: ".$user_input[$name]."\n");
+
         #check if error flag is not pulled
         if($error_flag)
             error_return($error_msg[$x][2]);
     }
         
 }
-    /*all checks passed*/
+
+/*all checks passed*/
 
 //delete confirm password and termsfrom arr
 unset($user_input["confirmpassword"],$user_input["terms"]);
@@ -55,14 +59,17 @@ if(call_user_func_array('addUser', $user_input)){
     
 }
 
+/********************/
+
+
 /*Forward to signupHandler*/
 function forward_user(){
     header("Location: signupHandler.php");
 }
 
 /*Send back with error*/
-function error_return($error_num){
-    header("Location: user_signup_form.php?error_msg=".$error[$error_num]);
+function error_return($err){
+    header("Location: user_signup_form.php?error_msg=".$err);
 }
 
 
@@ -80,7 +87,9 @@ function form_input(){
 
 
 /**
+ * 
  * Regular Expression checking here (Bare bones template for early testing)
+ * 
  */
 
  /**
@@ -120,7 +129,7 @@ function passCheck($input, &$error_flag){
     //run check on input
     
     //if somethings wrong, trip flag
-    $error_flag = false;
+    $error_flag = true;
 }
 
  /**
@@ -168,7 +177,7 @@ function emailCheck($input, &$error_flag){
  */
 function termsCheck($input, &$error_flag){
     //run input is null or not selected
-    if(!$input)
+    if($input)
         return $error_flag = false;
     else
         return $error_flag = true;  

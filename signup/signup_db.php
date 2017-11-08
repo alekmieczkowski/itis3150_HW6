@@ -18,9 +18,7 @@ function addUser($uname, $email, $pass, $fname, $lname, $role, $dept, $gender){
     //Add user to DB
     $sql = "INSERT INTO `users`( `userName`, `email`, `password`, `firstName`, `lastName`, `role`, `deptID`, `gender`)";
     $sql.= " VALUES ( '".$uname."', '".$email."', '".$pass."', '".$fname."', '".$lname."', '".$role."', ".(int)$dept.",'".$gender."');";
-    
     $usr_con=$db->prepare($sql);
-    //$stm->bindParam(':userName', $_POST['uname'] );
     $usr_con->execute();
     return true;
     }
