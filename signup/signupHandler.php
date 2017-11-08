@@ -1,6 +1,12 @@
 <!--Import all assets on another page-->
-<?php require_once('signup_imports.php');?>
 
+<?php
+#require_once('signup_imports.php');
+echo '<style>';
+include '../css/screen.css';
+include '../css/print.css';
+echo '</style>';
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
 

@@ -25,7 +25,7 @@
           echo '</div>';
         }
       ?>
-        <form id="user_signup" action="signup_logic.php" method="post" class="inline">
+        <form id="user_signup" action="validation_logic.php" method="post" class="inline">
           <fieldset>
             <div class="span-9">
             <p>
@@ -68,8 +68,8 @@
           	</p>
                 <p>
                     <label>Role</label><br>
-                    <input required type="radio" name="gender" value="male"> Student
-                    <input required type="radio" name="gender" value="female"> Manager<br>
+                    <input required type="radio" name="role" value="student"> Student
+                    <input required type="radio" name="role" value="manager"> Manager<br>
                 </p>
           	<p>
           		<label for="dept">Department</label><br>
@@ -86,7 +86,7 @@
 			</p>
           	
 			<p>
-				<input type="checkbox" name="accepted" id="accepted" value="accepted" required> Please check this checkbox to accept our terms.
+				<input type="checkbox" name="terms" id="accepted" value="true" required> Please check this checkbox to accept our terms.
             </p>
           	
             <p>
