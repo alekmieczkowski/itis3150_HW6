@@ -49,20 +49,35 @@ $user_input = form_input();
 #if something goes wrong, trip flag
 $error_flag = false;
 
+#cpass stuff
+$passwords = array();
+$hold = 0;
+
 #loop through rest of  inputs
 for($x = 1; $x <= count($error_msg); $x++){
 
     #loop through fields that need to be RE tested
     foreach($error_msg[$x][0] as $name){
         
-        #if exists
-        #if($user_input[$name] != null){
-            #send arr of data for check callback (RE function pointer, array(user input value, error flag))
+        #if current cpassCheck = next cpassCheck
+        if($x < 9 && $error_msg[$x][1] == "cpassCheck" && $error_msg[$x][1] === $error_msg[$x+1][1]){
+            #set hold to skip one rotation and get next pass
+            $hold+=1;
+            #add to passwords array
+            array_push($passwords, $user_input[$name]);
+        }
+        if($hold == 2){ #run password check
+            #run check
+            call_user_func_array($error_msg[$x][1], array($passwords, &$error_flag));
+            #reset hold
+            $hold = 0;
+        }
+        else if($hold != 1 && $hold != 2) #if placed in hold, two rotations will be skipped to add next password to arr
             call_user_func_array($error_msg[$x][1], array($user_input[$name], &$error_flag));
-        #}
+       
 
         #test
-        printf("flag:".$error_flag."  |  x: ".$x." | User Input: ".$user_input[$name]."\n\n");
+        #printf("flag:".$error_flag."  |  x: ".$x." | Function Call: ".$error_msg[$x][1]." | User Input: ".$user_input[$name]."<br/>");
 
         #check if error flag is not pulled
         if($error_flag){
@@ -72,7 +87,7 @@ for($x = 1; $x <= count($error_msg); $x++){
     }
         
 }
-printf("flag after check: ".$error_flag);
+#printf("flag after check: ".$error_flag);
 /*all checks passed*/
 
 //delete confirm password and termsfrom arr
@@ -163,10 +178,13 @@ function passCheck($input, &$error_flag){
  * test: Password and confirm password should match.
  */
 function cpassCheck($input, &$error_flag){
-    //run check on input
+
+    //if passwords match
+    if($input[0] === $input[1])
+        $error_flag = false;
+    else
+        $error_flag = true;
     
-    //if somethings wrong, trip flag
-    $error_flag = false;
 }
 
  /**
@@ -184,12 +202,12 @@ function genderCheck($input, &$error_flag){
  * test: Please select a role.
  */
 function roleCheck($input, &$error_flag){
-    printf("RoleCheck input Before:  ".$input);
+    #printf("RoleCheck input Before:  ".$input);
     if($input == null || $input == false)
         $error_flag=true;
     else
         $error_flag = false;
-    printf("RoleCheck input After:  ".$input);
+    #printf("RoleCheck input After:  ".$input);
 }
 
  /**
