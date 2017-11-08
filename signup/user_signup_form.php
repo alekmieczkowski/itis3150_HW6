@@ -60,7 +60,7 @@ echo '</style>';
             <div class="span-8 last">
             <p>
               <label for="email">Email</label><br>
-              <input required type="text" class="text" id="email" name="email" value="">
+              <input  type="text" class="text" id="email" name="email" value="">
             </p>
             
 			<p>

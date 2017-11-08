@@ -37,7 +37,7 @@ for($x = 1; $x <= count($error_msg); $x++){
         call_user_func_array($error_msg[$x][1], array($user_input[$name], &$error_flag));
 
         #test
-        #printf("flag:".$error_flag."  |  x: ".$x." | User Input: ".$user_input[$name]."\n");
+        #printf("flag:".$error_flag."  |  x: ".$x." | User Input: ".$user_input[$name]."\n\n");
 
         #check if error flag is not pulled
         if($error_flag)
@@ -49,13 +49,14 @@ for($x = 1; $x <= count($error_msg); $x++){
 /*all checks passed*/
 
 //delete confirm password and termsfrom arr
-unset($user_input["confirmpassword"],$user_input["terms"]);
-
+unset($user_input["confirmpassword"]);
+unset($user_input["terms"]);
+#print_r($user_input);
 //create user
 if(call_user_func_array('addUser', $user_input)){
 
     //redirect
-    forward_user();
+    //forward_user();
     
 }
 
@@ -88,7 +89,7 @@ function form_input(){
 
 /**
  * 
- * Regular Expression checking here (Bare bones template for early testing)
+ * Regular Expression checking here 
  * 
  */
 
@@ -106,10 +107,15 @@ function regExp1($input, &$error_flag){
  * test: Username already used, please use another username.
  */
 function uniqueName($input, &$error_flag){
-    //run check on input
-    
-    //if somethings wrong, trip flag
-    $error_flag = false;
+    printf("uniqueName Input: ".$input);
+    //check if username exists in DB
+    if(existingUser($input)){
+        $error_flag = false;
+    }
+    else{ //trip flag
+        $error_flag = true;
+    }
+    printf("Flag AFter Input: ".$error_flag);
 }
 
  /**
@@ -129,7 +135,7 @@ function passCheck($input, &$error_flag){
     //run check on input
     
     //if somethings wrong, trip flag
-    $error_flag = true;
+    $error_flag = false;
 }
 
  /**
@@ -166,10 +172,17 @@ function roleCheck($input, &$error_flag){
  * test: Please enter the correct email format.
  */
 function emailCheck($input, &$error_flag){
-    //run check on input
+
+    //regex string
+    $regex = "/^\S+@\S+\.\S+$/";
+
+    //if regex matches we're good, if not flag is set to true
+    if(preg_match($regex, $input))
+        $error_flag = false;
+    else
+        $error_flag = true;
     
-    //if somethings wrong, trip flag
-    $error_flag = false;
+    
 }
 
  /**
