@@ -14,12 +14,34 @@ $error_msg = array(
     3=> array(array("password","confirmpassword"),"passCheck","Should be at least 8 charaters, 1 upper case letter [A-Z], one special character !,#,@."),
     4=> array(array("password","confirmpassword"),"cpassCheck","Password and confirm password should match."),
     5=> array(array("gender"),"genderCheck","Please select a gender."),
-    6=> array(array("dept"),"roleCheck","Please select a role."),
+    6=> array(array("role"),"roleCheck","Please select a role."),
     7=> array(array("email"),"emailCheck","Please enter the correct email format."),
     8=> array(array("terms"),"termsCheck","Please accept the terms."),
     9=> array(array("firstname","lastname"),"flnameCheck","Firstname and Lastname should only contain characters [A-Z] or [a-z]")
 
 );
+
+
+/********************/
+
+
+/*Forward to signupHandler*/
+function forward_user(){
+    header("Location: signupHandler.php");
+}
+
+/*Send back with error*/
+function error_return($err){
+    printf("made it to error redirect, err: ". $err);
+    header("Location: user_signup_form.php?error_msg=".$err);
+}
+
+/*Create User*/
+function createUser($usr_inp){
+    call_user_func_array('addUser', $usr_inp);
+}
+
+/********************/
 
 #pull in user input as associative array { "field" => value} 
 $user_input = form_input();
@@ -32,46 +54,34 @@ for($x = 1; $x <= count($error_msg); $x++){
 
     #loop through fields that need to be RE tested
     foreach($error_msg[$x][0] as $name){
-            
-        #send arr of data for check callback (RE function pointer, array(user input value, error flag))
-        call_user_func_array($error_msg[$x][1], array($user_input[$name], &$error_flag));
+        
+        #if exists
+        #if($user_input[$name] != null){
+            #send arr of data for check callback (RE function pointer, array(user input value, error flag))
+            call_user_func_array($error_msg[$x][1], array($user_input[$name], &$error_flag));
+        #}
 
         #test
-        #printf("flag:".$error_flag."  |  x: ".$x." | User Input: ".$user_input[$name]."\n\n");
+        printf("flag:".$error_flag."  |  x: ".$x." | User Input: ".$user_input[$name]."\n\n");
 
         #check if error flag is not pulled
-        if($error_flag)
+        if($error_flag){
+            printf("Made it to error flag pull");
             error_return($error_msg[$x][2]);
+        }
     }
         
 }
-
+printf("flag after check: ".$error_flag);
 /*all checks passed*/
 
 //delete confirm password and termsfrom arr
 unset($user_input["confirmpassword"]);
 unset($user_input["terms"]);
 #print_r($user_input);
-//create user
-if(call_user_func_array('addUser', $user_input)){
-
-    //redirect
-    //forward_user();
-    
-}
-
-/********************/
 
 
-/*Forward to signupHandler*/
-function forward_user(){
-    header("Location: signupHandler.php");
-}
 
-/*Send back with error*/
-function error_return($err){
-    header("Location: user_signup_form.php?error_msg=".$err);
-}
 
 
 /**
@@ -80,9 +90,15 @@ function error_return($err){
 function form_input(){
     #array of fields to pull from post MUST BE IN THIS ORDER FOR DB
     $fields = array('username','email','password','firstname','lastname','role','dept','gender','confirmpassword','terms');
+    $form_data;
     #create associative array
-    foreach($fields as $field)
-        $form_data[$field] = $_POST[$field];
+    foreach($fields as $field){
+        if($_POST[$field]!= null || $_POST[$field]!= "" || $_POST[$field]!= false)
+            $form_data[$field] = $_POST[$field];
+        else
+            $form_data[$field] = false;
+    }
+
     return $form_data;
 }
 
@@ -107,25 +123,30 @@ function regExp1($input, &$error_flag){
  * test: Username already used, please use another username.
  */
 function uniqueName($input, &$error_flag){
-    printf("uniqueName Input: ".$input);
-    //check if username exists in DB
+
+    //check if username exists in DB trip flag if it does
     if(existingUser($input)){
-        $error_flag = false;
-    }
-    else{ //trip flag
         $error_flag = true;
     }
-    printf("Flag AFter Input: ".$error_flag);
+    else{ 
+        $error_flag = false;
+    }
+
 }
 
  /**
  * test: Username should contain 4-10 alphanumeric characters.
  */
 function unameCheck($input, &$error_flag){
-    //run check on input
-    
-    //if somethings wrong, trip flag
-    $error_flag = false;
+
+    //regex check
+    $regex = "/[a-zA-Z0-9]{4,10}/";
+
+    //if regex matches we're good, if not flag is set to true
+    if(preg_match($regex, $input))
+        $error_flag = false;
+    else
+        $error_flag = true;
 }
 
   /**
@@ -152,20 +173,23 @@ function cpassCheck($input, &$error_flag){
  * test: Please select a gender.
  */
 function genderCheck($input, &$error_flag){
-    //run check on input
-    
-    //if somethings wrong, trip flag
-    $error_flag = false;
+    //check if boxes were selected
+    if($input == null || $input == false)
+        $error_flag=true;
+    else
+        $error_flag = false;
 }
 
  /**
  * test: Please select a role.
  */
 function roleCheck($input, &$error_flag){
-    //run check on input
-    
-    //if somethings wrong, trip flag
-    $error_flag = false;
+    printf("RoleCheck input Before:  ".$input);
+    if($input == null || $input == false)
+        $error_flag=true;
+    else
+        $error_flag = false;
+    printf("RoleCheck input After:  ".$input);
 }
 
  /**
@@ -201,8 +225,14 @@ function termsCheck($input, &$error_flag){
  */
 function flnameCheck($input, &$error_flag){
 
-    //if somethings wrong, trip flag
-    $error_flag = false;
+    #regex string
+    $regex = "/[a-zA-Z]/";
+
+    //if regex matches we're good, if not flag is set to true
+    if(preg_match($regex, $input))
+        $error_flag = false;
+    else
+        $error_flag = true;
 }
 
 ?>

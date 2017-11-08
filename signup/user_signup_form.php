@@ -76,13 +76,13 @@ echo '</style>';
 
           	<p>
           		<label>Gender</label><br>
-            	<input required type="radio" name="gender" value="male"> Male
-            	<input required type="radio" name="gender" value="female"> Female<br>
+            	<input  type="radio" name="gender" value="male"> Male
+            	<input  type="radio" name="gender" value="female"> Female<br>
           	</p>
                 <p>
                     <label>Role</label><br>
-                    <input required type="radio" name="role" value="student"> Student
-                    <input required type="radio" name="role" value="manager"> Manager<br>
+                    <input  type="radio" id="role" name="role" value="student"> Student
+                    <input  type="radio" id="role" name="role" value="manager"> Manager<br>
                 </p>
           	<p>
           		<label for="dept">Department</label><br>
@@ -99,7 +99,7 @@ echo '</style>';
 			</p>
           	
 			<p>
-				<input type="checkbox" name="terms" id="accepted" value="true" required> Please check this checkbox to accept our terms.
+				<input type="checkbox" name="terms" id="accepted" value="true"> Please check this checkbox to accept our terms.
             </p>
           	
             <p>
