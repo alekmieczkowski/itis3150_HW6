@@ -32,24 +32,34 @@ function addUser($uname, $email, $pass, $fname, $lname, $role, $dept, $gender){
     }
 }
 
-/*Check if user exists in DB*/
-function existingUser($username){
-    require('../db/database.php');
+/*Check if user exists in DB
+
+Returns True if user exists
+*/
+function existingUser($usr_name){
+
+    require_once('../db/database.php');
     try{
-        $sql_eu = "SELECT * FROM `users` WHERE userName=':uname'";
+        $sql_eu = "SELECT * FROM users WHERE userName=:uname";
         $usr=$db->prepare($sql_eu);
-        $usr->bindValue(':uname',$username);
+        $usr->bindValue(':uname',$usr_name);
         $usr->execute();
         $data = $usr->fetchAll();
-        $usr->closeCursor();
+        
 
         //check if theres anything that came back
-        if($data!=null)
+        if($data!=null){
+            printf("not empty!");
             return true;
-        else
+        }
+        else{
+            printf("empty!: ".implode(",", $data) ."<br/>");
             return false;
+        }
+        $usr->closeCursor();
     }
-    catch(Exception $e){
+    catch(PDOException $e){
+        printf("Well shit: ".$e."<br/>");
         return false;
     }
 
